@@ -3,5 +3,5 @@
 ![](images/chatpanel.jpg)
 ![](images/chatpanelwithmessage.jpg)
 ![](images/file.jpg)
-![](images/groups.jpg)
+![](images/groups.png)
 ![](images/pull.jpg)
