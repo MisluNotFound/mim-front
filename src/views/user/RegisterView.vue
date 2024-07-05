@@ -1,0 +1,97 @@
+<template>
+  <ContentField>
+    <div class="row justify-content-md-center">
+      <div class="col-3">
+        <form @submit.prevent="register">
+          <div class="mb-3">
+            <label for="username" class="form-label">用户名</label>
+            <input
+              v-model="username"
+              type="text"
+              class="form-control"
+              id="username"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">密码</label>
+            <input
+              v-model="password"
+              type="password"
+              class="form-control"
+              id="password"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="confirmedPassword" class="form-label">请确认密码</label>
+            <input
+              v-model="confirmedPassword"
+              type="password"
+              class="form-control"
+              id="confirmedPassword"
+            />
+          </div>
+          <div class="error_message">{{ error_message }}</div>
+          <button type="submit" class="btn btn-primary">提交</button>
+        </form>
+      </div>
+    </div>
+  </ContentField>
+</template>
+
+<script>
+import ContentField from "@/components/ContentField.vue";
+import { ref } from "vue";
+import router from "@/router";
+import $ from "jquery";
+
+export default {
+  components: {
+    ContentField,
+  },
+
+  setup() {
+    let username = ref("");
+    let password = ref("");
+    let confirmedPassword = ref("");
+    let error_message = ref("");
+
+    const register = () => {
+      $.ajax({
+        url: "http://localhost:3000/user/signup",
+        type: "post",
+        data: JSON.stringify({
+          username: username.value,
+          password: password.value,
+          re_password: confirmedPassword.value,
+        }),
+
+        success(resp) {
+          if (resp.code === 1000) {
+            router.push({ name: "user_login" });
+          } else {
+            error_message.value = resp.msg;
+          }
+        },
+      });
+    };
+
+    return {
+      username,
+      password,
+      confirmedPassword,
+      error_message,
+      register,
+    };
+  },
+};
+</script>
+
+<style scoped>
+button {
+  margin-top: 20px;
+  width: 100%;
+}
+div.error_message {
+  color: red;
+}
+</style>
